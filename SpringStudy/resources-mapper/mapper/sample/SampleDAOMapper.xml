@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.medialog.mss.rest.dao.sample.SampleDAOMapper">
+
+	<!--Sample List-->
+	<select id="selectSampleList" resultType="sampleResponseVO" >
+		SELECT RANKING, SONG_ID, SONG_NM 
+		FROM MSS_P_CHART_SONGS
+	</select>
+	
+			
+</mapper>
