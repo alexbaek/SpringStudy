@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+	
+	<!-- dbcon properties 환경설정 정보 가져오기 -->
+	<util:properties id="dbConfig" location="classpath:/config/db/dbconn-properties.xml" />
+
+	<!-- JDBC Connection -->	
+	<bean id="dataBasicSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="#{dbConfig['jdbc.mysql.driver']}" />
+		<property name="url" value="#{dbConfig['jdbc.dev.mysql.url']}" />
+		<property name="username" value="#{dbConfig['jdbc.dev.mysql.username']}" />
+		<property name="password" value="#{dbConfig['jdbc.dev.mysql.password']}" />
+		<property name="initialSize" value="10"></property>
+		<property name="maxActive" value="100"></property>
+		<property name="maxIdle" value="50"></property>
+		<property name="minIdle" value="10"></property>
+		<property name="maxWait" value="10000"></property>
+		<property name="removeAbandoned" value="true"></property>
+		<property name="removeAbandonedTimeout" value="30000"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="600000"></property>
+		<property name="minEvictableIdleTimeMillis" value="30000"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="validationQuery" value="select 1 FROM DUAL"></property>
+	</bean>
+	
+	<!-- Mybatis sql & Session Template -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataBasicSource" />
+		<property name="mapperLocations" value="classpath*:/mapper/sample/**/*Mapper.xml" />
+		<property name="configLocation"  value="classpath:/config/db/mybatis-config.xml" />
+	</bean>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- Mybatis mapper auto scanning using MapperScannerConfiguer -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.alexbaek.web.**.dao" />
+	</bean>
+
+	<!-- transaction Annotation & transaction Manager-->
+	<context:annotation-config/>
+	
+ 	<tx:annotation-driven transaction-manager="transactionManager" /> 
+ 	
+ 	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataBasicSource" />
+	</bean>	
+
+</beans>

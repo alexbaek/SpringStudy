@@ -2,13 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.medialog.mss.rest.dao.sample.SampleDAOMapper">
+<mapper namespace="com.alexbaek.web.sample.dao.SampleDao">
 
 	<!--Sample List-->
-	<select id="selectSampleList" resultType="sampleResponseVO" >
-		SELECT RANKING, SONG_ID, SONG_NM 
-		FROM MSS_P_CHART_SONGS
+	<select id="getSampleData" resultType="sampleDataVO" >
+		SELECT ADMIN_ID, RIGHT_ID, ADMIN_NAME, PASSWD, PASSWD_CHANGE_DATE, IS_USE 
+		FROM `MSS_A_ACCOUNT_MGMT` 
 	</select>
 	
-			
+	<insert id="insertSampleData">
+		INSERT INTO MSS_A_ACCOUNT_MGMT
+		(
+			ADMIN_ID,
+			RIGHT_ID,
+			ADMIN_NAME,
+			PASSWD,
+			PASSWD_CHANGE_DATE,
+			IS_USE
+		) values
+		(
+			'ADMIN0001',
+			'01',
+			'백우영',
+			'1234',
+			now(),
+			'Y' )
+	</insert>
+	
 </mapper>

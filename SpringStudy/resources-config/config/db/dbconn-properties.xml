@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>mss database properties</comment>
+	
+	<entry key="jdbc.mysql.driver">com.mysql.cj.jdbc.Driver</entry>
+	
+	<!-- 개발기 & 로컬  -->
+	<entry key="jdbc.dev.mysql.url">jdbc:mysql://gedog31.zndb.net:3306/eckobwy?serverTimezone=UTC</entry>
+	<entry key="jdbc.dev.mysql.username">eckobwy</entry>
+	<entry key="jdbc.dev.mysql.password">eckobwy22</entry>
+	
+</properties>
