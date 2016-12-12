@@ -10,9 +10,11 @@
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>4.2.7.RELEASE</org.springframework-version>
+		<org.springframework.batch-version>3.0.7.RELEASE</org.springframework.batch-version>
 		<org.aspectj-version>1.8.9</org.aspectj-version>
 		<org.slf4j-version>1.7.21</org.slf4j-version>
 		<jackson.databind-version>2.8.2</jackson.databind-version>
+		<ch.qos.logback-version>1.1.7</ch.qos.logback-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -76,6 +78,42 @@
 	      <artifactId>jackson-dataformat-xml</artifactId>
 	      <version>${jackson.databind-version}</version>
 	    </dependency>
+	    
+	    <!-- Quartz framework -->
+		<dependency> 
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+		
+		<!-- TX -->
+		<dependency> 
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- Spring Batch dependency -->
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-core</artifactId>
+			<version>${org.springframework.batch-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-infrastructure</artifactId>
+			<version>${org.springframework.batch-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-test</artifactId>
+			<version>${org.springframework.batch-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 				
 		<!-- AspectJ -->
 		<dependency>
@@ -83,6 +121,18 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>	
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${ch.qos.logback-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>ch.qos.logback</groupId>
+		    <artifactId>logback-core</artifactId>
+		    <version>${ch.qos.logback-version}</version>
+		</dependency>
 		
 		<!-- Logging -->
 		<dependency>
@@ -198,5 +248,21 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+       		<resource>
+        		<directory>${project.basedir}\resources-config</directory>
+        		<includes>
+        			<include>**/*</include>
+        		</includes>
+        		<filtering>true</filtering>
+        	</resource>
+            <resource>
+                <directory>${project.basedir}\resources-mapper</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>         
+       </resources>
     </build>
 </project>

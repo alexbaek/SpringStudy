@@ -38,10 +38,7 @@ public class SampleController {
 		logger.info("========== SampleController = " + data.getAdminId());
 	}
 	
-	@RequestMapping(value = "insertSampleData", method = RequestMethod.GET)
-	public void insertSampleData(@RequestBody SampleDataVO data) {
-		
-	}
+	
 	
 	/**
 	 * Sample Data 조회.
@@ -50,8 +47,24 @@ public class SampleController {
 	@RequestMapping(value = "selectSampleData", method = RequestMethod.GET)
 	public @ResponseBody SampleDataVO selectSampleData() throws Exception {
 		logger.info("========== SampleController ========== selectSampleData() ========== ");
+		
 		SampleDataVO vo = sampleService.getSampleData();
+		
 		logger.info("========== SampleController = " + vo.getAdminId());
 		return vo;
+	}
+	
+	/**
+	 * Sample Data 입력.
+	 * @param data
+	 */
+	@RequestMapping(value = "insertSampleData", method = RequestMethod.GET)
+	public void insertSampleData(@RequestBody SampleDataVO data) {
+//		logger.info("========== SampleController ========== selectSampleData() ========== ");
+//		
+//		SampleDataVO vo = sampleService.getSampleData();
+//		
+//		logger.info("========== SampleController = " + vo.getAdminId());
+		
 	}
 }

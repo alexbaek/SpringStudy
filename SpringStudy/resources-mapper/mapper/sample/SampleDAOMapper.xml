@@ -4,6 +4,15 @@
 
 <mapper namespace="com.alexbaek.web.sample.dao.SampleDao">
 
+	<sql id="MSS_P_CHART_SONGS_ALL_COLUMN">
+		ADMIN_ID,
+		RIGHT_ID,
+		ADMIN_NAME,
+		PASSWD,
+		PASSWD_CHANGE_DATE,
+		IS_USE
+	</sql>
+
 	<!--Sample List-->
 	<select id="getSampleData" resultType="sampleDataVO" >
 		SELECT ADMIN_ID, RIGHT_ID, ADMIN_NAME, PASSWD, PASSWD_CHANGE_DATE, IS_USE 
@@ -26,7 +35,8 @@
 			'백우영',
 			'1234',
 			now(),
-			'Y' )
+			'Y'
+		)
 	</insert>
 	
 </mapper>

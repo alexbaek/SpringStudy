@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<!-- Confirm property whether change or not every 30 seconds and if change, reload -->
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<!-- in the absence of the class attribute, assume ch.qos.logback.core.hook.DelayingShutdownHook -->
+	<shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+	
+    <!-- Dev -->
+    <property name="LOG_DIR" value="/Users/wooyoung/web_workspace/LOG" />
+    
+    <property name="SERVICE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} %-5level [%method:%line] - %msg%n"/>
+    
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+        	<pattern>${SERVICE_LOG_PATTERN}</pattern> 
+        </encoder>
+    </appender>
+    
+    <!-- MSS PUSH 로그 -->
+    <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/mss-push-service.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Creage 1 file in a day. Create new file when size exeed 100MB -->
+            <fileNamePattern>${LOG_DIR}/mss-push-service.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <!-- Delete before 90 day -->  
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${SERVICE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 공통 로거 -->
+    <logger name="org.springframework" level="INFO">
+    	<appender-ref ref="LOG_FILE"/>
+    </logger>
+    <logger name="org.mybatis.spring" level="INFO">
+    	<appender-ref ref="LOG_FILE"/>
+    </logger>
+    <!-- WEB 로거 -->
+    <logger name="com.alexbaek.web" level="INFO">
+    	<appender-ref ref="LOG_FILE"/>
+    </logger>
+    
+    
+    <!-- 서버 반영시 STDOUT은 제외해야 함 -->
+    <root level="DEBUG">
+		<appender-ref ref="STDOUT"/>
+	</root>
+	<root level="ERROR">
+		<appender-ref ref="STDOUT"/>
+	</root>
+    
+</configuration>

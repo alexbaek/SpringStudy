@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch     http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		
+		<!--  Batch Context  -->
+		
+		<!-- Sample Job -->
+		<bean id="sampleJobBatch" class="com.alexbaek.web.batch.sample.SampleJobBatch"/>
+		
+		<!-- For times when you need more complex processing, passing data to the scheduled job -->
+		<bean name="sampleJob"    class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+			<property name="jobClass" value="com.alexbaek.web.batch.sample.SampleJobBean" />
+			<property name="jobDataMap">
+		        <map>
+		           <entry key="sampleJobBatch" value-ref="sampleJobBatch"/>
+		        </map>
+		    </property>
+		    <property name="durability" value="true" />
+		</bean>
+		
+		<!-- 
+	 	"0 0 12 * * ?"			매일 정오 12시에 실행
+	 	"0 15 10 ? * *"			매일 오전 10시 15분에 실행
+	 	"0 15 10 * * ?"			매일 오전 10시 15분에 실행
+	 	"0 15 10 ? * MON-FRI"	매주 월요일부터 금요일까지 오전 10시 15분에 실행
+	 	"0 15 10 15 * ?"		매달 15일 오전 10시 15분에 실행
+	 	"0 15 10 L * ?"			매달 마지막 날 오전 10시 15분에 실행
+	 	"0 15 10 ? * 6L"		매월 마지막 금요일 오전 10시 15분에 실행
+	 	"0 15 10 ? * 6#3"		매월 세번째 금요일 오전 10시 15분에 실행
+	 	"0 0 9-20/1 * * ?"		매일 09시부터 20시까지 1시간주기
+	 	
+	 	p:cronExpression="0/5 * * * * ?"    매일 5초 주기
+	 	p:cronExpression="0 25 15 * * ?"/>
+	 	p:cronExpression="0/30 * * * * ?"/>
+	 	 -->
+	 	 
+	 	<!-- Sample Batch Job -->
+	  	<bean id="sampleTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="sampleJob" />
+		    <property name="cronExpression" value="0/5 * * * * ?" />
+		</bean>
+		
+		<!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
+		<bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		    <property name="jobDetails">
+		        <list>
+		            <ref bean="sampleJob" />
+		        </list>
+		    </property>
+		    
+		    <property name="triggers">
+		        <list>
+		            <ref bean="sampleTrigger" />
+		        </list>
+		    </property>	    
+		</bean>
+
+</beans>
